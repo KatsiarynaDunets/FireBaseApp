@@ -28,7 +28,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ci3-qH-hP7">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ci3-qH-hP7">
                                                 <rect key="frame" x="0.0" y="60.666666666666664" width="343" height="20.333333333333336"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" systemColor="systemRedColor"/>
@@ -59,6 +59,9 @@
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Log in" buttonSize="large"/>
+                                                <connections>
+                                                    <action selector="loginAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="aJB-t9-ACF"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KSn-y1-cwR">
                                                 <rect key="frame" x="0.0" y="85.333333333333258" width="343" height="50.333333333333343"/>
@@ -66,7 +69,7 @@
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Registration" buttonSize="large"/>
                                                 <connections>
-                                                    <action selector="registrationAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="4hT-bw-eIz"/>
+                                                    <action selector="registrationAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="eBY-BD-Cdh"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -88,11 +91,55 @@
                         <outlet property="emailTF" destination="ZFD-R6-hF9" id="Quu-EC-g7F"/>
                         <outlet property="passwordTF" destination="b4h-B3-JzW" id="mdx-w5-x9H"/>
                         <outlet property="warnLbl" destination="ci3-qH-hP7" id="4lx-8C-d9s"/>
+                        <segue destination="HwN-Yx-LEM" kind="show" identifier="goToTasksTVC" id="LQ2-eu-AWD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="980.91603053435108" y="-34.507042253521128"/>
+        </scene>
+        <!--Tasks-->
+        <scene sceneID="TLM-aR-9l1">
+            <objects>
+                <tableViewController id="HwN-Yx-LEM" customClass="TasksTVC" customModule="FireBaseApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="giT-Fj-d65">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="cbJ-bR-OvL">
+                                <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cbJ-bR-OvL" id="Alb-a1-18L">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="HwN-Yx-LEM" id="4cf-eS-cwG"/>
+                            <outlet property="delegate" destination="HwN-Yx-LEM" id="hsY-lF-mv4"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Tasks" id="uDD-oG-2qY">
+                        <barButtonItem key="leftBarButtonItem" title="Sign Out" id="es2-qx-Qi2">
+                            <connections>
+                                <action selector="signOutAction:" destination="HwN-Yx-LEM" id="A10-g9-uxB"/>
+                            </connections>
+                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="A10-kt-gzB">
+                                <connections>
+                                    <action selector="addNewTaskAction:" destination="HwN-Yx-LEM" id="qV0-tQ-Q5E"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Add Image" id="O2e-oZ-gYl"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N9S-6Q-Y4e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1860" y="-26"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="9d5-sp-7ew">
