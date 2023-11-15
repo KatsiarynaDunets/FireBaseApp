@@ -124,16 +124,20 @@
                     <navigationItem key="navigationItem" title="Tasks" id="uDD-oG-2qY">
                         <barButtonItem key="leftBarButtonItem" title="Sign Out" id="es2-qx-Qi2">
                             <connections>
-                                <action selector="signOutAction:" destination="HwN-Yx-LEM" id="A10-g9-uxB"/>
+                                <action selector="signOutAction:" destination="HwN-Yx-LEM" id="huV-Gd-wwN"/>
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="A10-kt-gzB">
                                 <connections>
-                                    <action selector="addNewTaskAction:" destination="HwN-Yx-LEM" id="qV0-tQ-Q5E"/>
+                                    <action selector="addNewTaskAction:" destination="HwN-Yx-LEM" id="m0P-kf-n70"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Add Image" id="O2e-oZ-gYl"/>
+                            <barButtonItem title="Add Image" id="O2e-oZ-gYl">
+                                <connections>
+                                    <action selector="addNewImage:" destination="HwN-Yx-LEM" id="76Y-XK-Z7C"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
