@@ -5,12 +5,11 @@
 //  Created by Kate on 08/11/2023.
 //
 
-import UIKit
 import Firebase
 import FirebaseAuth
+import UIKit
 
 class LoginVC: UIViewController {
-    
     var ref: DatabaseReference!
     var authStateDidChangeListenerHandle: AuthStateDidChangeListenerHandle!
     
@@ -22,10 +21,10 @@ class LoginVC: UIViewController {
         super.viewDidLoad()
         warnLbl.alpha = 0
         ref = Database.database().reference(withPath: "users")
-        authStateDidChangeListenerHandle = Auth.auth().addStateDidChangeListener({ [weak self] _, user in
+        authStateDidChangeListenerHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
             guard let _ = user else { return }
             self?.performSegue(withIdentifier: "goToTasksTVC", sender: nil)
-        })
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(kbWillShow), name: UIWindow.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(kbWillHide), name: UIWindow.keyboardWillHideNotification, object: nil)
@@ -111,7 +110,6 @@ class LoginVC: UIViewController {
         }
     }
     
-    
     @objc private func kbWillHide() {
         view.frame.origin.y = 0
     }
@@ -123,7 +121,7 @@ class LoginVC: UIViewController {
 
 extension LoginVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+        view.endEditing(true)
         return false
     }
 }
