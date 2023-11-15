@@ -5,13 +5,12 @@
 //  Created by Kate on 12/11/2023.
 //
 
-import UIKit
 import Firebase
 import FirebaseAuth
 import FirebaseStorage
+import UIKit
 
 class TasksTVC: UITableViewController {
-    
     private var user: User!
     private var tasks = [Task]()
     var ref: DatabaseReference!
@@ -26,6 +25,7 @@ class TasksTVC: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // наблюдатель за значениями
         ref.observe(.value) { [weak self] snapshot in
             var tasks = [Task]()
             for item in snapshot.children {
@@ -61,6 +61,28 @@ class TasksTVC: UITableViewController {
         present(alertController, animated: true)
     }
     
+    @IBAction func addNewImage(_ sender: UIBarButtonItem) {
+        let storageRef = Storage.storage().reference()
+        let imageKey = NSUUID().uuidString
+        let imageRef = storageRef.child(imageKey)
+        guard let imageData = #imageLiteral(resourceName: "image.jpeg").pngData() else { return }
+        let uploadTask = imageRef.putData(imageData) { storageMetadata, error in
+            print("\nstorageMetadata:\n\(storageMetadata)\n")
+            print("\nerror:\n\(error)\n")
+            /// тут мы дальше записываем в DB нашего юзера imageKey
+            /// тоже самое можно проделать если вы решили использовать Thumbnails
+            
+            // MARK: - а теперь загрузим картинку
+            
+            let downloadTask = imageRef.getData(maxSize: 999999999999999) { data, error in
+                print("\n data: \n\(data)\n")
+                print("\n error:\n\(error)\n")
+                let image = UIImage(data: data!)
+                print(image)
+            }
+        }
+    }
+    
     @IBAction func signOutAction(_ sender: UIBarButtonItem) {
         do {
             try Auth.auth().signOut()
@@ -73,30 +95,24 @@ class TasksTVC: UITableViewController {
     private func toggleColetion(cell: UITableViewCell, isCompleted: Bool) {
         cell.accessoryType = isCompleted ? .checkmark : .none
     }
+    
+    // MARK: - Table view delegate
 
-    // MARK: - Table view data source
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tasks.count
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        let task = tasks[indexPath.row]
+        let isComplete = !task.completed
+        /// изменим ячейку
+        // toggleColetion(cell: cell, isCompleted: isComplete) - в этом нет смысла так как мы имеем ref.observe
+        /// запишем данные на сервер
+        task.ref.updateChildValues(["completed": isComplete])
     }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let currentTask = tasks[indexPath.row]
-        cell.textLabel?.text = currentTask.title
-        toggleColetion(cell: cell, isCompleted: currentTask.completed)
-        return cell
-    }
-
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { true }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            // Delete the row from the data source
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        } else if editingStyle == .insert {
-//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//        }
+        guard editingStyle == .delete else { return }
+        let task = tasks[indexPath.row]
+        task.ref.removeValue()
     }
 }
